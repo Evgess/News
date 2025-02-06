@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import News, NewsCategory, Favorite
 from .forms import RegForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.views import View
 
 def home_page(request):
@@ -29,25 +29,23 @@ def contacts_page(request):
     return render(request, 'contacts.html')
 
 class Register(View):
-    template_name = 'register.html'
+    template_name = 'registration/register.html'
 
     def get(self, request):
-        form = RegForm()  # Создаем пустую форму
-        return render(request, self.template_name, {'form': form})
+        context = {'form': RegForm}
+        return render(request, self.template_name, context)
 
     def post(self, request):
         form = RegForm(request.POST)  # Здесь мы используем вашу форму
 
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password2')
+        if form():
+            username = form.get('username')
+            email = form.get('email')
+            password = form.get('password2')
 
             user = User.objects.create_user(username=username, email=email, password=password).save()
             login(request, user)
             return redirect('/')  # Перенаправляем на главную страницу
-
-        return render(request, self.template_name, {'form': form})  # Отправка обратно с ошибками
 
 def logout_view(request):
     logout(request)
@@ -56,7 +54,7 @@ def logout_view(request):
 def to_favorite(request, pk):
     if request.method == 'POST':
         news = News.objects.get(id=pk)
-        Favorite.objects.create(user_id=request.id, user_news=news).save()
+        Favorite.objects.create(user_id=request.user.id, user_news=news).save()
         return redirect('/')
 
 def del_from_favorite(request, pk):
@@ -68,4 +66,17 @@ def del_from_favorite(request, pk):
 def favorite(request):
     user_favorite = Favorite.objects.filter(user_id=request.id)
     news_ids = [n.user_news.id for n in user_favorite]
+
+
+def search_news(request):
+    if request.method == 'POST':
+        get_news = request.POST.get('search_news')
+
+        searched_news = News.objects.filter(news_title__iregex=get_news)
+
+        if searched_news:
+            context = {'news': searched_news}
+            return render(request, 'result.html', context)
+        else:
+            return redirect('/')
 

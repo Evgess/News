@@ -8,6 +8,7 @@ urlpatterns = [
     path('contacts', views.contacts_page),
     path('register', views.Register.as_view()),
     path('category/<int:pk>', views.category_page),
+    path('search', views.search_news),
     path('news/<int:pk>', views.news_page),
     path('add-to-favorite/<int:pk>', views.to_favorite),
     path('del-from-favorite/<int:pk>', views.del_from_favorite),

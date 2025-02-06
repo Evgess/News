@@ -23,7 +23,8 @@ from django.contrib import admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('testapp.urls'))
+    path('', include('testapp.urls')),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
 
 
