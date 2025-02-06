@@ -17,11 +17,34 @@
         <li class="nav-item"><a href="#" class="nav-link">Войти</a></li>
       </ul>
 </header>
-<h2>{{ news.news_title }}</h2>
-<hr>
-<p>Подробнее: {{ news.news_text }}</p>
+<div class="container d-flex 100">
+    <div class="container col-xxl-10 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+      <div class="col-10 col-sm-8 col-lg-6">
+        <img src="{{news.news_photo.url }}" class="d-block mx-lg-auto img-fluid" alt="" width="700" height="500" loading="lazy">
+      </div>
+      <div class="col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3">{{ news.news_title }}</h1>
+        <p class="lead">{{ news.news_text }}</p>
+          <p class="lead">Категория: <a href="/category/{{ news.news_category.id }}">{{ news.news_category }}</a></p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            {% if user.is.authenticated %}
+            <form action="/to_favorite.{{ news.id }}" method="post">
+                <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2">Добавить новость</button>
+            </form>
+            {% else %}
+            <p class="lead">Зарегистрируйся прежде чем добавлять новости!</p>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<h2>{{ news.news_title }}</h2>-->
+<!--<hr>-->
+<!--<p>Подробнее: {{ news.news_text }}</p>-->
 
-<br>
-<a href="/category/{{ news.news_category.id }}">{{ news.news_category }}</a>
+<!--<br>-->
+<!--<a href="/category/{{ news.news_category.id }}">{{ news.news_category }}</a>-->
 </body>
 </html>

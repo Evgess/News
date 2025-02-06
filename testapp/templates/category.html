@@ -17,8 +17,14 @@
         <li class="nav-item"><a href="#" class="nav-link">Войти</a></li>
       </ul>
 </header>
+<h1>Новости по категории {{category}}</h1>
+<hr>
 {% for n in news %}
-<a href="/news/{{ n.id }}">{{ n.news_title }}</a>
+<div class="container">
+    <img src="{{ n.news_photo.url }}" alt="">
+    <a href="/news/{{ n.id }}">{{ n.news_title }}</a>
+    <hr>
+</div>
 <br>
 {% endfor %}
 </body>

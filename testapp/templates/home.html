@@ -16,8 +16,13 @@
 
     <ul class="nav nav-pills">
         <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Главная</a></li>
+        {% if user.is.authenticated %}
+            <li class="nav-item"><a href="/favorite" class="nav-link">Избранные</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link">Выйти</a></li>
+        {% else %}
         <li class="nav-item"><a href="/register" class="nav-link">Регистрация</a></li>
         <li class="nav-item"><a href="/login" class="nav-link">Войти</a></li>
+        {% endif %}
     </ul>
 </header>
 <div class="container d-flex 100">
@@ -44,7 +49,7 @@
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
         {% for n in news %}
         <div class="feature col">
-            <img src="{{ n.news_photo.url }}" alt="" width="250" height="250">
+            <a href="/news/{{ n.id }}"><img src="{{ n.news_photo.url }}" alt="" width="250" height="250"></a>
             <h2>{{ n.news_title }}</h2>
             <p>{{ n.news_text }}</p>
             <a href="/news/{{ n.id }}" class="icon-link">Details

@@ -21,7 +21,7 @@ class News(models.Model):
         return str(self.news_title)
 
 
-class Card(models.Model):
+class Favorite(models.Model):
     user_id = models.IntegerField()
     user_news = models.ForeignKey(News, on_delete=models.CASCADE)
     user_news_count = models.IntegerField()
